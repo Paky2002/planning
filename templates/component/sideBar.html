@@ -1,0 +1,124 @@
+
+	<!-- wrapper -->
+	<div class="wrapper">
+		<!--sidebar-wrapper-->
+		<div class="sidebar-wrapper" data-simplebar="true">
+			<div class="sidebar-header">
+				<div class="">
+					<img src="{{ url_for('static', filename='images/logo-icon.png')}}" class="logo-icon-2" alt="" />
+				</div>
+				<div>
+					<h4 class="logo-text">GPlanning</h4>
+				</div>
+				<a href="javascript:;" class="toggle-btn ml-auto"> <i class="bx bx-menu"></i>
+				</a>
+			</div>
+			<!--navigation-->
+			<ul class="metismenu" id="menu">
+				<li>
+					<a href="{{url_for('main.home')}}">
+						<div class="parent-icon icon-color-1"><i class="bx bx-home-alt"></i>
+						</div>
+						<div class="menu-title">Dashboard</div>
+					</a>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-6"><i class="bx bx-task"></i>
+						</div>
+						<div class="menu-title">Prenotazioni</div>
+					</a>
+					<ul>
+						<li><a href="{{url_for('prenotazioni_.aggiungiPrenotazioniView')}}"><i class="bx bx-plus"></i>Inserisci</a></li>
+						<li><a href="{{url_for('preventivi_.preventiviView')}}"><i class="lni lni-euro"></i>Preventivo</a></li>
+					</ul>
+				</li>
+				<li>
+					<a class="has-arrow" href="javascript:;">
+						<div class="parent-icon icon-color-2"><i class="lni lni-home"></i>
+						</div>
+						<div class="menu-title">Camere</div>
+					</a>
+					<ul>
+						<li><a href="{{url_for('camere_.camereView')}}"><i class="lni lni-home"></i>Camere</a></li>
+						<li><a href="{{url_for('tariffe_.tariffeView')}}"><i class="lni lni-euro"></i>Tariffe</a></li>
+						<li><a href="{{url_for('extra_.extraView')}}"><i class="lni lni-star"></i>Extra</a></li>
+						
+					</ul>
+				</li>
+				<li>
+					<a href="{{url_for('main.mail')}}">
+						<div class="parent-icon icon-color-2"><i class="bx bx-envelope"></i>
+						</div>
+						<div class="menu-title">Email</div>
+					</a>
+				</li>
+				<li>
+					<a href="chat-box.html">
+						<div class="parent-icon icon-color-3"> <i class="bx bx-conversation"></i>
+						</div>
+						<div class="menu-title">Chat Box</div>
+					</a>
+				</li>
+				<li>
+					<a href="file-manager.html">
+						<div class="parent-icon icon-color-4"><i class="bx bx-archive"></i>
+						</div>
+						<div class="menu-title">File Manager</div>
+					</a>
+				</li>
+				<li>
+					<a href="contact-list.html">
+						<div class="parent-icon icon-color-5"><i class="bx bx-group"></i>
+						</div>
+						<div class="menu-title">Contatcs</div>
+					</a>
+				</li>
+				<li>
+					<a href="to-do.html">
+						<div class="parent-icon icon-color-6"><i class="bx bx-task"></i>
+						</div>
+						<div class="menu-title">Todo List</div>
+					</a>
+				</li>
+				<li>
+					<a href="invoice.html">
+						<div class="parent-icon icon-color-7"><i class="bx bx-file"></i>
+						</div>
+						<div class="menu-title">Invoice</div>
+					</a>
+				</li>
+				<li>
+					<a href="fullcalender.html">
+						<div class="parent-icon icon-color-8"> <i class="bx bx-calendar-check"></i>
+						</div>
+						<div class="menu-title">Calendar</div>
+					</a>
+				</li>
+				<li class="menu-label">SOCIAL</li>
+				<li>
+					<a href="fullcalender.html">
+						<div class="parent-icon icon-color-11"> <i class="bx bx-crop"></i>
+						</div>
+						<div class="menu-title">Post</div>
+					</a>
+				</li>
+				<li class="menu-label">SUPPORTO</li>
+				<li>
+					<a href="https://themeforest.net/user/codervent" target="_blank">
+						<div class="parent-icon"><i class="bx bx-support"></i>
+						</div>
+						<div class="menu-title">Istruzioni</div>
+					</a>
+				</li>
+				<li>
+					<a href="https://themeforest.net/user/codervent" target="_blank">
+						<div class="parent-icon"><i class="bx bx-support"></i>
+						</div>
+						<div class="menu-title">Support</div>
+					</a>
+				</li>
+			</ul>
+			<!--end navigation-->
+		</div>
+		<!--end sidebar-wrapper-->

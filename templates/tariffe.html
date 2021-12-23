@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
+                <div class="breadcrumb-title pr-3">Camere</div>
+                <div class="pl-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Camere</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ml-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Settings</button>
+                        <button type="button" class="btn btn-primary bg-split-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">	<span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">	<a class="dropdown-item" href="javascript:;">Action</a>
+                            <a class="dropdown-item" href="javascript:;">Another action</a>
+                            <a class="dropdown-item" href="javascript:;">Something else here</a>
+                            <div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="row">
+                <div class="col-12 col-lg-12">
+                    <div class="card radius-15 border-lg-top-primary">
+                        <div class="card-body p-5">
+                            <div class="card-title d-flex align-items-center">
+                                <div>PERIODO
+                                    <button type="button" class="btn btn-primary ml-2 btn-sm" style = "border-radius: 100px; font-size: 10PX;" data-toggle="modal" data-target="#exampleModal3">AGGIUNGI <i class="bi bi-node-plus" style="vertical-align: middle"></i></button>
+                                <!-- Modal -->
+                                </div>
+                                <h4 class="mb-0 text-primary"></h4>
+                            </div>
+                            <hr/>
+                            {% for periodo in periodi %}
+                                <div style ="color :white;background-color:#343a40;border-radius: 15px;padding: 10px;" class="row mb-3 d-flex align-items-center">
+                                    <div class="col-9 d-flex justify-content-center">
+                                        {{periodo.inizio}} <i class="bi bi-arrow-right"> </i> {{periodo.fine}}
+                                    </div>
+                                    <div data-periodo={{periodo.id}} style = "border-radius : 10px; background-color: lightgreen" data-toggle="modal" data-target="#modificaPeriodo" class="col-1 d-flex justify-content-center openModalModificaPeriodo" >
+                                        <button type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center openModalAddCamera" data-toggle="modal" data-target="#cameraFisica"><i style = "font-size: 10px;" class="bi bi-pencil-square mx-auto"></i></button>
+                                    </div>
+                                    <div class="col-1">
+
+                                    </div>
+                                    <div data-periodo={{periodo.id}} style = "border-radius : 10px; background-color: red" data-toggle="modal" data-target="#eliminaPeriodo" class="col-1 d-flex justify-content-center openModalEliminaPeriodo" >
+                                        <button type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center openModalAddCamera" data-toggle="modal" data-target="#cameraFisica"><i style = "font-size: 10px;" class="bi bi-dash-circle mx-auto"></i></button>
+                                    </div>
+                                </div>
+                                
+								<div class="table-responsive" style="border-radius: 10px;overflow:hidden;">
+									<table class="table table-striped table-bordered mb-3" style = "border-radius: 10px;" id="table{{periodo.id}}">
+                                        <thead class="thead-dark">
+											<tr>
+                                                <th scope="col">Tipologia</th>
+												<th scope="col">Tipo</th>
+                                                <th scope="col">Prezzo/notte</th>
+                                                <th scope="col">Prezzo/settimana</th>
+											</tr>
+										</thead>
+										<tbody>
+                                                {% for tariffa in periodo.tariffe%}
+                                                    <tr data-tipo = "0" data-tariffa = "{{tariffa.id}}">
+                                                        <td>{{tariffa.tipologia.tipologia}}</td>
+                                                        <td>B&b</td>
+                                                        <td>{{tariffa.bedBreakfast}}</td>
+                                                        <td>{{tariffa.bedBreakfastSettimana}}</td>
+                                                    </tr>
+                                                    <tr data-tipo = "1" data-tariffa = "{{tariffa.id}}">
+                                                        <td>{{tariffa.tipologia.tipologia}}</td>
+                                                        <td>Mezza Pensione</td>
+                                                        <td>{{tariffa.mezzaPensione}}</td>
+                                                        <td>{{tariffa.mezzaPensioneSettimana}}</td>
+                                                    </tr>
+                                                    <tr data-tipo = "2" data-tariffa = "{{tariffa.id}}"  style="border-bottom: 1.2px dotted  #212529;">
+                                                        <td>{{tariffa.tipologia.tipologia}}</td>
+                                                        <td>Pensione Completa</td>
+                                                        <td>{{tariffa.pensioneCompleta}}</td>
+                                                        <td>{{tariffa.pensioneCompletaSettimana}}</td>
+                                                    </tr>
+                                                {%endfor%}
+                                            
+										</tbody>
+									</table>
+								</div>
+                                {%endfor%}
+                                <form action = '\tariffePost' method="POST">
+                                    {{form.hidden_tag()}}
+                                    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">AGGIUNGI PERIODO</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">	
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-body">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6">
+                                                                {{ form.dataInizio.label()}} 
+                                                                {{ form.dataInizio()}}
+                                                            </div>
+                                                            <div class="form-group col-md-6">
+                                                                {{ form.dataFine.label()}} 
+                                                                {{ form.dataFine()}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                                    <button type="submit" class="btn btn-primary">Salva</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </form>
+                            <form id="eliminaPeriodoForm" >
+                                <!--<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />-->
+                                <div class="modal fade" id="eliminaPeriodo" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">SEI SICURO ?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">	
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                SEI SICURO DI VOLER CANCELLARE QUESTA CAMERA ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                                <button type="submit" name = "submit" class="btn btn-danger">Elimina</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form id="modificaPeriodoForm" action = '\changeP' method="POST">
+                                {{form.hidden_tag()}}
+                                <div class="modal fade" id="modificaPeriodo" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">MODIFICA PERIODO ?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">	
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-body">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            {{ form.dataInizio.label()}} 
+                                                            {{ form.dataInizio()}}
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{ form.dataFine.label()}} 
+                                                            {{ form.dataFine()}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+                                                <button type="submit" name = "submit" class="btn btn-primary">Salva</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                                <!-- END Modal -->
+                            <!--</form>-->
+                        </div>
+                    </div>
+                </div>
+             </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal -->
+
+
+  
+  
+
+<!-- end modal-->
+<script src="{{ url_for ('static', filename= '/plugins/edittable/bstable.js')}}"></script>
+    <script type="module">
+        import {tariffe} from "{{ url_for ('static', filename= '/modules/main.js')}}"
+        tariffe ();
+    </script>
+    
+
+
+{% endblock %}

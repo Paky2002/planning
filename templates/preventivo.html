@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.date.css')}}" rel="stylesheet" />
+<link rel="stylesheet" href=" {{ url_for ('static', filename= 'plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css')}}">
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.css')}}" rel="stylesheet" />
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.time.css')}}" rel="stylesheet" />
+
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
+                <div class="breadcrumb-title pr-3">Preventivo</div>
+                <div class="pl-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Preventivo</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ml-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Settings</button>
+                        <button type="button" class="btn btn-primary bg-split-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">	<span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">	<a class="dropdown-item" href="javascript:;">Action</a>
+                            <a class="dropdown-item" href="javascript:;">Another action</a>
+                            <a class="dropdown-item" href="javascript:;">Something else here</a>
+                            <div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="row">
+                <div class="col-12 col-lg-12">
+                    <div class="card radius-15 border-lg-top-primary">
+                        <div class="card-body p-5">
+                            <div class="card-title d-flex align-items-center">
+                                <div><i class='bx bxs-user mr-1 font-24 text-primary'></i>
+                                </div>
+                                <h4 class="mb-0 text-primary">Preventivo</h4>
+                            </div>
+                            <hr/>
+                            <form id="formPreventivo" method="POST">
+                                <div class="form-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            {{ form.cognome.label() }}
+                                            {{ form.cognome() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.checkIn.label() }}
+                                            {{ form.checkIn() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.checkOut.label() }}
+                                            {{ form.checkOut() }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            {{ form.adulti.label() }}
+                                            {{ form.adulti() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.ridotti.label() }}
+                                            {{ form.ridotti() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.infant.label() }}
+                                            {{ form.infant() }}
+                                        </div>
+                                    </div>
+                                    <div class="form-body">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                {{ form.telefono.label() }}
+                                                {{ form.telefono() }}
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                {{ form.email.label() }}
+                                                {{ form.email() }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="bottoneMostraPreventivo" class="btn btn-primary px-5 radius-30">Verifica</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--MODAL PREVENTIVI-->
+            <div id="mostraPreventivi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="myModalLabel">Camere disponibili</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table" id="tabellaPreventivi">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Numero</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">BB</th>
+                                    <th scope="col">MP</th>
+                                    <th scope="col">PC</th>
+                                    <th scope="col">Inserisci</th>
+                                  </tr>
+                                </thead>
+                                <tbody></tbody>
+                              </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <button class="btn btn-warning" id="openModalExtra" aria-hidden="true">Extra</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--MODAL EXTRA-->
+            <div id="mostraExtra" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">EXTRA</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div id="extra">
+                                {% for e in extra %}
+
+                                <div class="row extraData">
+                                    <div data-idExtra="{{e.id}}"class="col-6 d-flex align-items-center">{{e.nomeExtra}}</div>
+                                    <div class="col-3" >{{e.prezzoExtra}}€</div>
+                                    <div class="col-1"></div>
+                                    <div class="col-2">
+                                        <input class="form-control radius-30" min="0" required="" type="number" value="0"></div>
+                                    </div>
+                                    <hr>
+
+                                {%endfor%}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" id="extraClose" aria-hidden="true">Close</button>
+                            <button class="btn btn-primary" id="extraSave" aria-hidden="true">Salva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--MODAL TRATTAMENTO-->
+            <div id="mostraTrattamento" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">TRATTAMENTO</h5>
+                        </div>
+                        <div class="modal-body">
+                            <select id="trattamentoInserisci" class="form-control radius-30">
+                                <option value="bb">Bed&Breakfast</option>
+                                <option value="mp">Mezza pensione</option>
+                                <option value="pc">Pensione completa</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" id="trattamentoClose" aria-hidden="true">Close</button>
+                            <button class="btn btn-primary" id="trattamentoSave" aria-hidden="true">Invia</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="module">
+    import {preventivi} from "{{ url_for ('static', filename= '/modules/main.js')}}"
+    preventivi ('{{extraJson | tojson}}');
+</script>   
+
+
+{% endblock %}

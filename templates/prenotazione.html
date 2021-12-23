@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.date.css')}}" rel="stylesheet" />
+<link rel="stylesheet" href=" {{ url_for ('static', filename= 'plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.min.css')}}">
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.css')}}" rel="stylesheet" />
+<link href=" {{ url_for ('static', filename= 'plugins/datetimepicker/css/classic.time.css')}}" rel="stylesheet" />
+
+<div class="page-wrapper">
+    <!--page-content-wrapper-->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <!--breadcrumb-->
+            <div class="page-breadcrumb d-none d-md-flex align-items-center mb-3">
+                <div class="breadcrumb-title pr-3">Prenotazioni</div>
+                <div class="pl-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 p-0">
+                            <li class="breadcrumb-item"><a href="javascript:;"><i class='bx bx-home-alt'></i></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">Aggiungi Prenotazione</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="ml-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Settings</button>
+                        <button type="button" class="btn btn-primary bg-split-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">	<span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left">	<a class="dropdown-item" href="javascript:;">Action</a>
+                            <a class="dropdown-item" href="javascript:;">Another action</a>
+                            <a class="dropdown-item" href="javascript:;">Something else here</a>
+                            <div class="dropdown-divider"></div><a class="dropdown-item" href="javascript:;">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end breadcrumb-->
+            <div class="row">
+                <div class="col-7 col-lg-7">
+                    <div class="card radius-15 border-lg-top-primary">
+                        <div class="card-body p-5">
+                            <div class="card-title d-flex align-items-center">
+                                <div><i class='bx bxs-user mr-1 font-24 text-primary'></i></div>
+                                <h4 class="mb-0 text-primary">Aggiungi Prenotazione</h4>
+                            </div>
+                            <hr/>
+                            <form id="formPreventivo" method="POST">
+                                <div class="form-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            {{ form.cognome.label() }}
+                                            {{ form.cognome() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.checkIn.label() }}
+                                            {{ form.checkIn() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.checkOut.label() }}
+                                            {{ form.checkOut() }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            {{ form.adulti.label() }}
+                                            {{ form.adulti() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.ridotti.label() }}
+                                            {{ form.ridotti() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.infant.label() }}
+                                            {{ form.infant() }}
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            {{ form.trattamento.label() }}
+                                            {{ form.trattamento() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.telefono.label() }}
+                                            {{ form.telefono() }}
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            {{ form.email.label() }}
+                                            {{ form.email() }}
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary px-5 radius-30">Aggiungi</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 col-lg-5">
+                    <div class="card border-lg-top-primary" style="background-color : rgb(243, 241, 241);margin-bottom: 0px;border-top-left-radius: 15px;border-top-right-radius: 15px;">
+                        <div class="card-body p-3">
+                            <div class="card-title">
+                                <h6 class="mb-0 text-primary">DETTAGLI PRENOTAZIONE</h6>
+                                <hr>
+                            </div>
+                            <!--CARD-->
+                            <div id="card_">
+                                {% if ciao == 3%}    
+                                    <!-- CARD DA PREVENTIVO --> 
+                                <div>                         
+                                    <div class="p-3">
+                                        <div class="row" style="height: 40px;background-color : #673ab7; border-top-left-radius: 7px;border-top-right-radius: 7px;padding: 10px">
+                                            <div class="col-2" style="padding : 0px">
+                                                <span style="font-size: 100%;background-color: white;color : #673ab7" class="badge badge-primary numeroCameraCard">{{camera.numeroCamera}}</span>
+                                            </div>
+                                            <div class="col-8" style="padding : 0px">
+                                                <span style="font-size: 100%;background-color: white;color : #673ab7" class="badge badge-primary tipologiaCard">
+                                                    {{camera.tipologia.tipologia}}
+                                                </span>
+                                            </div>
+                                            <div style ="border-radius : 10px;background-color : red;" id="deleteCard" data-index='0' class="col-2 d-flex justify-content-center"> 
+                                                <button type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center openModalAddCamera" data-toggle="modal" data-target="#cameraFisica"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="row shadow" style="border : solid 1px #e5e5e5;border-bottom-left-radius: 7px; border-bottom-right-radius: 7px;background-color: white;padding: 2px;">
+                                            <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;margin-top: 10px;">
+                                                <div class="col-9 dateCard">
+                                                    {{form.checkIn.data}}->{{form.checkOut.data}}
+                                                </div>
+                                                <div class="col-3">
+                                                    <i class="bi bi-person-circle"></i> 3
+                                                </div>
+                                            </div>
+                                            <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                                                <div class="col-9 tipoCard">{{camera.tipologia.tipo}}
+                                                </div>
+                                                <div class="col-3">
+                                                    <i class="bi bi-door-open-fill"></i>
+                                                </div>
+                                            </div>
+                                            <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;border-bottom: solid 1px  #e5e5e5; padding-bottom: 10px;">
+                                                <div class="col-12 trattamentoCard">{{ trattamento }}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                                                <div class="col-9 d-flex align-items-center">
+                                                    Prezzo
+                                                </div>
+                                                <div class="col-3 d-flex align-items-center prezzoCard">
+                                                {{prezzo}}€
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary radius-30" id ="supplemento" data-index='' style="width: 100%;margin : 0px;" data-toggle="modal" data-target="#mostraExtra">Supplementi</button>
+                                    </div>
+                                    <!-- END CARD DA PREVENTIVO -->
+                                {%endif%}
+                            </div>
+                            <div id="price_">
+                                 <!-- PRICE DA PREVENTIVO-->
+                                 {% if ciao == 3%}
+                                    <hr>
+                                    <div class="postoPrezzi">
+                                        <div class="row priceIndex" data-index="0" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                                            <div class="col-9 d-flex align-items-center priceCamera">CAMERA {{camera.numeroCamera}}</div>
+                                            <div class="col-3 d-flex align-items-center pricePrezzo">{{prezzo}}€</div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="postoExtra">
+                                        {% for key,value in idExtra.items()%}
+                                        <div class="row priceIndex" data-index="0" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                                                <div class="col-9 d-flex align-items-center extraNome">
+                                                   {{value}}x {{extraJson[key].nomeExtra}} ({{camera.tipologia.tipo}} {{camera.numeroCamera}})
+                                                </div>
+                                                <div class="col-3 d-flex align-items-center extraPrezzo">
+                                                    {{extraJson[key].prezzoExtra * value}} €
+                                                </div>
+                                            </div>
+                                        {%endfor%}
+                                    </div>
+                                    <hr>
+                                    <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 16px;font-weight: bold;">
+                                        <div class="col-9 d-flex align-items-center">TOTALE</div>
+                                        <div class="col-3 d-flex align-items-center totaleCamera">{{prezzo}}€</div>
+                                    </div>
+                                 {%endif%}
+                                </div>
+                            <!--END CARD-->
+                        </div>
+                    </div>
+                    <div id="prenota_">
+                        {% if ciao == 3%}
+                            <button id="prenotaButton" style="width: 100%;margin : 0px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px;border-top-left-radius: 0px;border-top-right-radius: 0px;" class="btn btn-success">PRENOTA</button>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+            <!--MODAL-->
+            <div id="mostraPreventivi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="myModalLabel">Camere disponibili</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table" id="tabellaPreventivi">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Numero</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Prezzo</th>
+                                    <th scope="col">Inserisci</th>
+                                  </tr>
+                                </thead>
+                                <tbody></tbody>
+                              </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--END MODAL-->
+            <!--MODAL EXTRA-->
+            <div id="mostraExtra" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">EXTRA</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div id="extra">
+                                {% for e in extra%}
+                                    <div class="row extraData">
+                                        <div class="col-6 d-flex align-items-center"  > {{e.nomeExtra}} </div>
+                                        <div class="col-3 d-flex align-items-center" >{{e.prezzoExtra}} €</div>
+                                        <div class="col-1"></div>
+                                        <div class="col-2 d-flex align-items-center">
+                                        <input class="form-control radius-30 extraItem" data-idExtra = "{{e.id}}" min="0" required="" type="number" value="0">
+                                        </div>
+                                    </div>
+                                    <hr>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" id="extraClose" aria-hidden="true">Close</button>
+                            <button class="btn btn-primary" id="extraSave" aria-hidden="true" data-index="0">Salva</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--END MODAL-->
+            <!--CARD TEMPLATE-->
+            <template id="templateCard">
+                <div>
+                <div class="p-3">
+                    <div class="row" style="height: 40px;background-color : #673ab7; border-top-left-radius: 7px;border-top-right-radius: 7px;padding: 10px">
+                        <div class="col-2" style="padding : 0px">
+                            <span style="font-size: 100%;background-color: white;color : #673ab7" class="badge badge-primary numeroCameraCard"></span>
+                        </div>
+                        <div class="col-8" style="padding : 0px">
+                            <span style="font-size: 100%;background-color: white;color : #673ab7" class="badge badge-primary tipologiaCard"></span>
+                        </div>
+                        <div style ="border-radius : 10px;background-color : red;" id="deleteCard" data-index='0' class="col-2 d-flex justify-content-center"> 
+                            <button type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center openModalAddCamera" data-toggle="modal" data-target="#cameraFisica"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></button>
+                        </div>
+                    </div>
+                    <div class="row shadow" style="border : solid 1px #e5e5e5;border-bottom-left-radius: 7px; border-bottom-right-radius: 7px;background-color: white;padding: 2px;">
+                        <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;margin-top: 10px;">
+                            <div class="col-9 dateCard">
+                                
+                            </div>
+                            <div class="col-3">
+                                <i class="bi bi-person-circle"></i> 3
+                            </div>
+                        </div>
+                        <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                            <div class="col-9 tipoCard">
+                            </div>
+                            <div class="col-3">
+                                <i class="bi bi-door-open-fill"></i>
+                            </div>
+                        </div>
+                        <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;border-bottom: solid 1px  #e5e5e5; padding-bottom: 10px;">
+                            <div class="col-12 trattamentoCard">
+                            </div>
+                        </div>
+                        
+                        <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                            <div class="col-9 d-flex align-items-center">
+                                Prezzo
+                            </div>
+                            <div class="col-3 d-flex align-items-center prezzoCard">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary radius-30" id ="supplemento" data-index='' style="width: 100%;margin : 0px;" data-toggle="modal" data-target="#mostraExtra">Supplementi</button>
+            </div>
+            </template>
+            <!--PRICE CARD TEMPLATE-->
+            <template id="templatePrice">
+                <hr>
+                <div class="postoPrezzi">
+                    
+                </div>
+                <hr>
+                <div class="postoExtra">
+                </div>
+                <hr>
+                <div class="row" style ="width:100%;height:25px;margin-left: 0px;font-size: 16px;font-weight: bold;">
+                    <div class="col-9 d-flex align-items-center">
+                        TOTALE
+                    </div>
+                    <div class="col-3 d-flex align-items-center totaleCamera">
+                    </div>
+                </div>
+            </template>
+            <!--PRICE CARD TEMPLATE-->
+            
+            <!--PRENOTA BUTTON TEMPLATE-->
+            <template id="templatePrenota">
+                <button id="prenotaButton" style="width: 100%;margin : 0px;border-bottom-left-radius: 15px;border-bottom-right-radius: 15px;border-top-left-radius: 0px;border-top-right-radius: 0px;" class="btn btn-success">PRENOTA</button>
+            </template>
+            <!--END PRENOTA BUTTON TEMPLATE-->
+            <template id="pricePrice">
+                <div class="row priceIndex" data-index="0" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                    <div class="col-9 d-flex align-items-center priceCamera">
+
+                    </div>
+                    <div class="col-3 d-flex align-items-center pricePrezzo">
+    
+                    </div>
+                </div>
+            </template>
+
+            <!--END PRENOTA BUTTON TEMPLATE-->
+            <template id="extraExtra">
+                <div class="row priceIndex" data-index="0" style ="width:100%;height:25px;margin-left: 0px;font-size: 12px;">
+                    <div class="col-9 d-flex align-items-center extraNome">
+
+                    </div>
+                    <div class="col-3 d-flex align-items-center extraPrezzo">
+    
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+<script type="module">
+    var newDictCamera = {};
+    '{% if ciao == 3%}'
+        newDictCamera ['numeroStanza'] = '{{camera.numeroCamera}}';
+        newDictCamera ['prezzo'] = '{{prezzo}}';
+        newDictCamera ['tipo'] = '{{camera.tipologia.tipo}}';
+        newDictCamera ['tipologia'] = '{{camera.tipologia.tipologia}}';
+        newDictCamera ['idCamera']='{{idCamera}}';
+        newDictCamera ['trattamento']= '{{trattamento}}';
+        newDictCamera ['idPreventivo']= '{{idPreventivo}}';
+    '{%endif%}'
+    import {prenotazioni} from "{{ url_for ('static', filename= '/modules/main.js')}}"
+    prenotazioni ('{{extraJson | tojson}}', newDictCamera, '{{idExtra | tojson}}');
+    </script> 
+
+
+
+{% endblock %}

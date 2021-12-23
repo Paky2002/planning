@@ -1,0 +1,808 @@
+{% extends "base.html" %}
+
+{% block content %}
+		<!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content p-0">
+					<!--start email wrapper-->
+					<div class="email-wrapper">
+						<div class="email-sidebar">
+							<div class="email-sidebar-header"> <a href="javascript:;" class="btn btn-primary btn-block compose-mail-btn"><i class='bx bx-plus mr-2'></i> Scrivi</a>
+							</div>
+							<div class="email-sidebar-content">
+								<div class="email-navigation">
+									<div class="list-group list-group-flush"> 
+										{% for folder in mailBoxInformation ['folder']%}
+											<a data-nameFolder = "{{folder['name']}}" class="list-group-item d-flex align-items-center changeFolder"><i class='bx bxs-inbox mr-3 font-20'></i><span>{{folder['name']}}</span><span class="badge badge-primary badge-pill ml-auto">{{folder['messaggiNumero']}}</span></a>
+										{% endfor %}
+									</div>
+								</div>
+								<div class="email-meeting">
+									<div>
+										<div class="list-group-item email-hangout cursor-pointer border-top">
+											<div class="media align-items-center">
+												<div class="chat-user-online">
+													<img src="https://via.placeholder.com/110x110" width="42" height="42" class="rounded-circle" alt="" />
+												</div>
+												<div class="media-body ml-2">
+													<p class="mb-0 textEllips">{{current_user.name}}</p>
+												</div>
+												<div class="dropdown">
+													<div class="font-24 dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><i class='bx bx-plus'></i>
+													</div>
+													<div class="dropdown-menu dropdown-menu-right">	<a class="dropdown-item" href="javascript:;">Settings</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Help & Feedback</a>
+														<a class="dropdown-item" href="javascript:;">Enable Split View Mode</a>
+														<a class="dropdown-item" href="javascript:;">Keyboard Shortcuts</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Sign Out</a>
+													</div>
+												</div>
+												<div class="dropdown">
+													<div class="font-24 dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><i class='bx bx-plus'></i>
+													</div>
+													<div class="dropdown-menu dropdown-menu-right">	<a class="dropdown-item" href="javascript:;">Settings</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Help & Feedback</a>
+														<a class="dropdown-item" href="javascript:;">Enable Split View Mode</a>
+														<a class="dropdown-item" href="javascript:;">Keyboard Shortcuts</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Sign Out</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="email-header d-xl-flex align-items-center" >
+							<div class="d-flex align-items-center">
+								<div class="email-toggle-btn"><i class='bx bx-menu'></i>
+								</div>
+								<div class="btn btn-white">
+									<input type="checkbox">
+								</div>
+								<div class="" >
+									<button type="button" class="btn btn-white ml-2"><i class='bx bx-refresh'></i>
+									</button>
+								</div>
+								<div class="">
+									<button type="button" class="btn btn-white ml-2"><i class='bx bx-downvote'></i>
+									</button>
+								</div>
+								<div class="d-none d-md-flex">
+									<button type="button" class="btn btn-white ml-2"><i class='bx bx-file'></i>
+									</button>
+								</div>
+								<div class="">
+									<button type="button" class="btn btn-white ml-2"><i class='bx bx-trash'></i>
+									</button>
+								</div>
+							</div>
+							<div class="flex-grow-1 mx-xl-2 my-2 my-xl-0">
+								<div class="input-group">
+									<div class="input-group-prepend">	<span class="input-group-text bg-transparent"><i class="bx bx-search"></i></span>
+									</div>
+									<input type="text" class="form-control" placeholder="Search mail">
+								</div>
+							</div>
+							<div class="ml-auto d-flex align-items-center">
+								<button class="btn btn-sm btn-light">1-12</button>
+								<button class="btn btn-white px-2 ml-2 down"><i class='bx bx-chevron-left'></i>
+								</button>
+								<button class="btn btn-white px-2 ml-2 up"><i class='bx bx-chevron-right'></i>
+								</button>
+							</div>
+						</div>
+							
+							<div class="email-content">
+								<div class="email-list">
+									
+									{% for mail in msg%}
+										<div class = "rowMail d-flex align-items-center" data-uid='{{mail.uid}}' >
+											<a style="color:black"></a>
+												<div class="row ml-0 mr-0">
+													<div class="col-1 d-flex align-items-center email-actions">
+														<input type="checkbox" value="" /> <i class='bx bx-star font-20 mx-2 email-star'></i>
+													</div>
+													<div class="col-3 d-flex align-items-center textEllips" >
+														<p class="mb-0" id="from"><b>{{mail.from_}}</b>
+														</p>
+													</div>
+													<div class="col-6 d-flex align-items-center email-actions textEllips">
+														<p class="mb-0" id="sub">{{mail.subject}}</p>
+													</div>
+													<div class="col-2 d-flex align-items-center email-actions">
+														<p class="mb-0 email-time" id="date">{{mail.date.strftime('%d-%m-%Y')}}</p>
+													</div>
+												</div>
+											</a>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+								<!-- EMAIL READ -->
+								<div class="email-content">
+									<div class="email-read-box p-15" style="display: none;">
+										<h4 class="readSubject"></h4>
+										<hr>
+										<div class="media align-items-center mb-3">
+											<img src="https://via.placeholder.com/110x110" width="42" height="42" class="rounded-circle" />
+											<div class="media-body ml-2">
+												<p class="mb-0 font-weight-bold readFrom"></p>
+												<div class="dropdown">
+													<div class="dropdown-toggle" data-toggle="dropdown">to me</div>
+													<div class="dropdown-menu">	<a class="dropdown-item" href="javascript:;">Settings</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Help & Feedback</a>
+														<a class="dropdown-item" href="javascript:;">Enable Split View Mode</a>
+														<a class="dropdown-item" href="javascript:;">Keyboard Shortcuts</a>
+														<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Sign Out</a>
+													</div>
+												</div>
+											</div>
+											<p class="mb-0 chat-time pl-5 ml-auto readDate"></p>
+										</div>
+											<a class="card radius-15 cardStyleInfoPrenotazione" data-toggle="collapse" href="#attColl" role="button" aria-expanded="false" aria-controls="attColl">
+												<div class="card-body p-2 pr-2 text-center">
+													<div class="d-flex flex-row align-items-center">
+														<div class="media-body ml-3 d-flex flex-row align-items-center numAtt">
+															
+														</div>
+														<i class="lni lni-arrow-down"></i>
+													</div>
+												</div>
+											</a>
+										<div class="collapse" id="attColl">
+										</div>
+										<div class="email-read-content px-md-5 py-5">
+											
+										</div>
+									</div>
+								</div>
+								
+						<!--start compose mail-->
+						<div class="compose-mail-popup">
+							<div class="card">
+								<div class="card-header bg-dark text-white py-2 cursor-pointer">
+									<div class="d-flex align-items-center">
+										<div class="compose-mail-title">Nuovo messaggio</div>
+										<div class="compose-mail-close ml-auto">x</div>
+									</div>
+								</div>
+								<div class="card-body pb-0">
+									<div class="email-form">
+										<div class="form-group">
+											<input type="text" id="emailTo" class="form-control" placeholder="To" />
+										</div>
+										<div class="form-group">
+											<input type="text" id="emailSubject" class="form-control" placeholder="Subject" />
+										</div>
+										<div class="form-group">
+											<div contenteditable='true' class="form-control mb-3" id="emailMsg" placeholder="Message" rows="10" cols="10"></textarea>
+										</div>
+										<a class="card radius-15" data-toggle="collapse" href="#attCollMailPopup" role="button" aria-expanded="false" aria-controls="attCollMailPopup">
+											<div class="card-body p-2 pr-2 text-center">
+												<div class="d-flex flex-row align-items-center">
+													<div class="media-body ml-3 d-flex flex-row align-items-center numAttMailPopup">
+														<strong><i class="lni lni-paperclip"></i> 0 ALLEGATI</strong>
+													</div>
+													<i class="lni lni-arrow-down"></i>
+												</div>
+											</div>
+										</a>
+										<div class="collapse" id="attCollMailPopup">
+										</div>
+										
+										<div class="form-group mb-0">
+											<div class="d-flex align-items-center">
+												<div class="">
+													<div class="btn-group">
+														<button type="button" class="btn btn-primary sendMail">Invia</button>
+														<button type="button" class="btn btn-primary bg-split-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">	<span class="sr-only">Toggle Dropdown</span>
+														</button>
+														<div class="dropdown-menu">	<a class="dropdown-item" href="javascript:;">Action</a>
+															<a class="dropdown-item" href="javascript:;">Another action</a>
+															<a class="dropdown-item" href="javascript:;">Something else here</a>
+															<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
+														</div>
+													</div>
+												</div>
+												<div class="ml-2">
+													<button type="button" id="allegaInMail" class="btn border-0 btn-sm btn-white"><i class='lni lni-paperclip'></i>
+													</button>
+													<input id="fileDialog" style="display:none" type="file" multiple="multiple" />
+													<button type="button" class="btn border-0 btn-sm btn-white"><i class="lni lni-emoji-tounge"></i>
+													</button>
+													<button type="button" class="btn border-0 btn-sm btn-white"><i class="lni lni-google-drive"></i>
+													</button>
+												</div>
+												<div class="ml-auto">
+													<button type="button" data-toggle="modal" data-target="#modalPreventivo" data-idPreventivo='' class="btn border-0 btn-sm btn-white"><i class="lni lni-calculator"></i></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--end compose mail-->
+						<!--start email overlay-->
+						<div class="overlay email-toggle-btn-mobile"></div>
+						<!--end email overlay-->
+					</div>
+					<!--end email wrapper-->
+				</div>
+			</div>
+			<!--end page-content-wrapper-->
+		</div>
+
+		<!--MODAL PER CALCOLO PREVENTIVO -->
+		<div class="modal fade" id="modalPreventivo" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Calcolo preventivo</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">	<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="form-body">
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									{{ formPreventivo.checkIn.label() }}
+									{{ formPreventivo.checkIn() }}
+								</div>
+								<div class="form-group col-md-6">
+									{{ formPreventivo.checkOut.label() }}
+									{{ formPreventivo.checkOut() }}
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									{{ formPreventivo.adulti.label() }}
+									{{ formPreventivo.adulti() }}
+								</div>
+								<div class="form-group col-md-4">
+									{{ formPreventivo.ridotti.label() }}
+									{{ formPreventivo.ridotti() }}
+								</div>
+								<div class="form-group col-md-4">
+									{{ formPreventivo.infant.label() }}
+									{{ formPreventivo.infant() }}
+								</div>
+							</div>
+							<button type="button" id="bottoneMostraPreventivo" class="btn btn-primary px-5 radius-30">Verifica</button>
+						</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--END MODAL PER CALCOLO PREVENTIVO-->
+
+		<!-- TEMPLATE HEADER IN EMAIL CONTENT-->
+
+		<template id="templateHederInRow">
+			<div class="d-flex align-items-center">
+				<div class="email-toggle-btn"><i class='bx bx-menu'></i>
+				</div>
+				<div class="">
+					<button type="button" id="indietro" class="btn btn-white ml-2"><i style="color:red" class='lni lni-arrow-left-circle'></i></button>
+				</div>
+				<div class="">
+					<button type="button" class="btn btn-white ml-2"><i class='bx bx-trash'></i></button>
+				</div>
+				<div class="" >
+					<button type="button" id="rispondiMail" class="btn btn-white ml-2"><i class='fadeIn animated bx bx-message-square-detail'></i></button>
+				</div>
+				<div class="">
+					<button type="button" class="btn btn-white ml-2"><i class='fadeIn animated bx bx-network-chart'></i></button>
+				</div>
+				<div class="d-none d-md-flex">
+					<button type="button" class="btn btn-white ml-2 auto-calculate"><i class='fadeIn animated bx bx-mail-send'></i>
+					</button>
+				</div>
+				
+			</div>
+			<div class="flex-grow-1 mx-xl-2 my-2 my-xl-0">
+				<div class="input-group">
+					<div class="input-group-prepend">	<span class="input-group-text bg-transparent"><i class="bx bx-search"></i></span>
+					</div>
+					<input type="text" class="form-control" placeholder="Search mail">
+				</div>
+			</div>
+			<div class="ml-auto d-flex align-items-center">
+				<button class="btn btn-sm btn-light">1-12</button>
+				<button class="btn btn-white px-2 ml-2 down"><i class='bx bx-chevron-left'></i>
+				</button>
+				<button class="btn btn-white px-2 ml-2 up"><i class='bx bx-chevron-right'></i>
+				</button>
+			</div>
+		</template>
+
+		<!-- TEMPLATE HEADER IN LIST-->
+
+		<template id="templateHederInList">
+			<div class="d-flex align-items-center">
+				<div class="email-toggle-btn"><i class='bx bx-menu'></i>
+				</div>
+				<div class="btn btn-white">
+					<input type="checkbox">
+				</div>
+				<div class="" >
+					<button type="button" class="btn btn-white ml-2"><i class='bx bx-refresh'></i>
+					</button>
+				</div>
+				<div class="">
+					<button type="button" class="btn btn-white ml-2"><i class='bx bx-downvote'></i>
+					</button>
+				</div>
+				<div class="d-none d-md-flex">
+					<button type="button" class="btn btn-white ml-2"><i class='bx bx-file'></i>
+					</button>
+				</div>
+				<div class="">
+					<button type="button" class="btn btn-white ml-2"><i class='bx bx-trash'></i>
+					</button>
+				</div>
+			</div>
+			<div class="flex-grow-1 mx-xl-2 my-2 my-xl-0">
+				<div class="input-group">
+					<div class="input-group-prepend">	<span class="input-group-text bg-transparent"><i class="bx bx-search"></i></span>
+					</div>
+					<input type="text" class="form-control" placeholder="Search mail">
+				</div>
+			</div>
+			<div class="ml-auto d-flex align-items-center">
+				<button class="btn btn-sm btn-light">1-12</button>
+				<button class="btn btn-white px-2 ml-2 down"><i class='bx bx-chevron-left'></i>
+				</button>
+				<button class="btn btn-white px-2 ml-2 up"><i class='bx bx-chevron-right'></i>
+				</button>
+			</div>
+		</template>
+
+		<!--TEMPLATE ROW MAIL-->
+
+		<template id="rowMailTemplate">
+				<div id="rm" class="rowMail d-flex align-items-center">
+					<a style="color:black">
+						<div class="row ml-0 mr-0">
+							<div class="col-1 d-flex align-items-center email-actions">
+								<input type="checkbox" value="" /> <i class='bx bx-star font-20 mx-2 email-star'></i>
+							</div>
+							<div class="col-3 d-flex align-items-center textEllips">
+								<p class="mb-0"><b id="from"></b>
+								</p>
+							</div>
+							<div class="col-6 d-flex align-items-center email-actions textEllips">
+								<p class="mb-0" id="sub"></p>
+							</div>
+							<div class="col-2 d-flex align-items-center email-actions">
+								<p class="mb-0 email-time" id="date"></p>
+							</div>
+						</div>
+					</a>
+				</div>
+
+		</template>
+
+		<template id="templateAttMailPopup">
+			<div id="never">
+				<div data-id="" class="chip chip-lg bg-primary text-white">
+					<i color="white" class="lni lni-paperclip"></i><span id="text">Tiger Xink </span><span class="closebtn deleteAttInPopup" onclick="this.parentElement.style.display='none'">&times;</span>
+				</div>
+			</div>
+		</template>
+
+		<template id="attTemplate">
+			<div id="never">
+				<div id="text" class="card card-body allegatoRow"></div>
+			</div>
+		</template>
+		<!--end page-wrapper-->
+	<script>
+var ultimoUid = '{{msg[-1].uid}}'
+var page = 1
+var lastCategory = 'INBOX'
+var gConctatId = 0
+var fileAtt = {}
+var replyVar = false
+
+new PerfectScrollbar('.email-navigation'); 
+new PerfectScrollbar('.email-read-box');
+new PerfectScrollbar('#emailMsg');
+
+//SNIPPET PER INSERIRE GLI ALLEGATI IN UNA MAIL CHE INVIAMO NOI
+
+$('#allegaInMail').on('click', function(){
+	$('#fileDialog').click();
+})
+
+$('#fileDialog').on('change', function(){
+	$.each($(this)[0].files, function (index, value) {
+		var templateChip = $($('#templateAttMailPopup').html())
+		$(templateChip).find('#text').html(value.name)
+		$(templateChip).find('.chip').attr('data-fileName', value.name)
+		$(templateChip).appendTo('#attCollMailPopup')
+		fileAtt[value.name] = value
+	})
+})
+
+$('#attCollMailPopup').on('click','.deleteAttInPopup',function(){
+	delete fileAtt [$(this).parent().attr('data-fileName')]
+})
+
+//RISPONDI MAIL
+
+$('.email-header').on('click', '#rispondiMail',function(){
+
+	var reply = '<br><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> \
+	<div class="v1gmail_quote"> \
+	<div style="font-size: 10pt; font-family: Verdana,Geneva,sans-serif;" dir="ltr">Il giorno lun 6 set 2021 alle ore 10:16 &lt;<a href="mailto:info@piccoloparadisorodi.it" rel="noreferrer">info@piccoloparadisorodi.it</a>&gt; ha scritto:</div> \
+	<blockquote class="v1gmail_quote" style="margin: 0px 0px 0px 0.8ex; border-left: 1px solid #cccccc; padding-left: 1ex;"> \
+	<div style="font-size: 10pt; font-family: Verdana,Geneva,sans-serif;">'+ $('.email-read-content').html()+ '</div>\
+	</blockquote>\
+	</div>\
+	</meta> \ '
+	setMsgMailPopup (reply+'<br>')
+	setToInMailPopup ([$('.readFrom').html()])
+	setObjInMailPopup ($('.readSubject').html())
+	openScriviPopup ()
+	replyVar = true
+})
+
+$(document).ready(
+	$('.changeFolder').attr("ondrop","drop(event)"),
+	$('.changeFolder').attr("ondragover","allowDrop(event)"),
+	$('.changeFolder').attr("ondragenter","dragEnterFunction(event)"),
+	$('.changeFolder').attr("ondragleave","dragLeaveFunction(event)"),
+	addAscoltatoreDrag()
+);
+
+$('.changeFolder').on('click', function(){
+	var url = '/changeFolderList';
+	$('.changeFolder').css('background-color', 'white')
+	$(this).css ('background-color', 'rgb(103 58 183 / 12%)')
+
+	$.ajax({
+		type : 'post',
+		url : url,
+		data : {'folderName' : $(this).attr('data-nameFolder')},
+		success : function (d) {
+			$('.email-list').html('')
+			$.each (d.data.msgg, function (index, value){
+				var templateMail = $($('#rowMailTemplate').html())
+				$(templateMail).find('#from').html(d.data.msgg[index]['from']);
+				$(templateMail).find('#sub').html(d.data.msgg[index]['subject']);
+				$(templateMail).find('#date').html(new Date(d.data.msgg[index]['date']).toISOString().split('T')[0]);
+				$(templateMail).appendTo($('.email-list'))
+			})
+			var dataUidElement = $('.email-list').find('.rowMail')
+			$.each ($(dataUidElement), function (index, value){
+				$(value).attr('data-uid',d.data.msgg[index]['uid'])
+			})
+			ultimoUid = d.data.msgg[d.data.msgg.length-1]['uid']	
+		},
+		async : false
+	})
+	setEmailContentList()
+	addAscoltatoreDrag()
+})
+
+function getZip(element) {
+	var xhr = new XMLHttpRequest();
+	xhr.responseType = 'blob'
+	xhr.open('POST', '/getAttachments', true);
+	xhr.onload = function(e) {
+		if (this.status == 200) {
+			var blob = new Blob([this.response], {type: element.getAttribute('data_type')});
+			var url = window.URL.createObjectURL(blob);
+			var link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', element.getAttribute('data_name'));
+			document.body.appendChild(link);
+			link.click();
+		}
+	};
+	xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+	xhr.send('att-id='+element.getAttribute('data_idAtt')+'&uid='+element.getAttribute('data_uid'));
+	return false;
+}
+
+$('.email-list').on('click','.rowMail',function (){
+	$('.email-header').html('')
+	$('.email-header').append ($('#templateHederInRow').html())
+	var url = '/getMail'
+	$.ajax({
+		type : 'post',
+		url : url,
+		data : {'uid' : $(this).attr('data-uid')},
+		success : function (d) {
+			if (d.data.status == 'success')
+			{
+				$('.email-read-content').html(d.data.msgg['html']) //readSubject
+				$('.readSubject').html(d.data.msgg['subject'])
+				$('.readFrom').html(d.data.msgg['from'])
+				$('.readDate').html(new Date(d.data.msgg ['date']).toISOString().split('T')[0])
+				if (d.data.msgg['allegato'].length != 0)
+				{
+					$('.numAtt').html('<strong><i class="lni lni-paperclip"></i> '+d.data.msgg['allegato'].length+' ALLEGATI</strong>')
+					$('.cardStyleInfoPrenotazione').show()
+					$('#attColl').html('')
+					$.each($(d.data.msgg ['allegato']), function(index, value){
+						var attTemplate = $($('#attTemplate').html())	
+						$(attTemplate).find('#text').html(value['filename'] + ' (' + value ['size']+'kb)')
+						$(attTemplate).find('#text').attr('data_type', value['type'])
+						$(attTemplate).find('#text').attr('data_idAtt', value['att_id'])
+						$(attTemplate).find('#text').attr('data_uid', d.data.msgg['uid'])
+						$(attTemplate).find('#text').attr('data_name', value['filename'])
+						$(attTemplate).find('#text').attr('onclick', 'getZip(this);')
+						$(attTemplate).appendTo('#attColl')
+					})
+				}
+				else
+				{
+					$('.cardStyleInfoPrenotazione').hide()
+				}
+				
+			}
+		},
+		async : false
+	})
+	setEmailContentRow()
+})
+
+//ATTIVITA SUI BOTTONI DELL'HEADER MAIL
+
+//SCRIPT PER IL BOTTONE FRECCIA PER CAMBIARE PAGINA
+
+$('.email-header').on('click', '.down' ,function(){
+	var url = "/getOldMessage"
+	$.ajax({
+		type : 'post',
+		url : url,
+		data : {'uid' : ultimoUid},
+		success : function (d) {
+			if (d.data.status == 'success')
+			{
+				$('.email-list').html('')
+				$.each (d.data.msgg, function (index, value){
+					var templateMail = $($('#rowMailTemplate').html())
+					$(templateMail).find('#from').html(d.data.msgg[d.data.msgg.length-index-1]['from']);
+					$(templateMail).find('#sub').html(d.data.msgg[d.data.msgg.length-index-1]['subject']);
+					$(templateMail).find('#date').html(new Date(d.data.msgg[d.data.msgg.length-index-1]['date']).toISOString().split('T')[0]);
+					$(templateMail).appendTo($('.email-list'))
+					addAscoltatoreDrag()
+					var dataUidElement = $('.email-list').find('.rowMail')
+					$.each ($(dataUidElement), function (index, value){
+						$(value).attr('data-uid',d.data.msgg[d.data.msgg.length-index-1]['uid'])
+					})
+				})	
+				ultimoUid = d.data.msgg[0]['uid']
+			}
+		}
+	})
+})
+
+//SCRIPT PER IL BOTTONE FRECCIA PER CAMBIARE PAGINA
+
+$('.email-header').on('click', '.up' ,function(){
+	
+	var url = "/getNewMessage"
+	$.ajax({
+		xhr: function()
+		{
+			var xhr = new window.XMLHttpRequest();
+			//Upload progress
+			xhr.upload.addEventListener("progress", function(evt){
+			if (evt.lengthComputable) {
+				var percentComplete = evt.loaded / evt.total;
+				//Do something with upload progress
+				console.log(percentComplete);
+			}
+			}, false);
+			//Download progress
+			xhr.addEventListener("progress", function(evt){
+			if (evt.lengthComputable) {
+				var percentComplete = evt.loaded / evt.total;
+				//Do something with download progress
+				console.log(percentComplete);
+			}
+			}, false);
+			return xhr;
+		},
+		type : 'post',
+		url : url,
+		data : {'uid' : ultimoUid},
+		success : function (d) {
+			if (d.data.status == 'success')
+			{
+				$('.email-list').html('')
+				$.each (d.data.msgg, function (index, value){
+					var templateMail = $($('#rowMailTemplate').html())
+					$(templateMail).find('#from').html(d.data.msgg[d.data.msgg.length-1-index]['from']);
+					$(templateMail).find('#sub').html(d.data.msgg[d.data.msgg.length-1-index]['subject']);
+					$(templateMail).find('#date').html(new Date(d.data.msgg[d.data.msgg.length-1-index]['date']).toISOString().split('T')[0]);
+					$(templateMail).appendTo($('.email-list'))
+					addAscoltatoreDrag()
+					var dataUidElement = $('.email-list').find('.rowMail')
+					$.each ($(dataUidElement), function (index, value){
+						$(value).attr('data-uid',d.data.msgg[d.data.msgg.length-index-1]['uid'])
+					})
+				})	
+				ultimoUid = d.data.msgg[0]['uid']
+			}
+		}
+	})
+})
+
+//SCRIPT PER IL BOTTONE INDIETRO (ROW -> LIST)
+
+$('.email-header').on('click', '#indietro' ,function(){
+	setHeaderList()
+	setEmailContentList ()
+})
+
+//FINE ATTIVITA SULLE MAIL
+
+$('.compose-mail-close').on('click', function () {
+	pulisciCasellaMail()
+})
+
+//FUNCTION PER IL DRAG AND DROP 
+
+function drop (event) {
+	event.preventDefault()
+	var url = "/moveToEmailBox";
+	
+	$.ajax ({
+		type:'post',
+		url : url,
+		data : {'uid' : event.dataTransfer.getData('uid'), 'folder' : $(event.target).attr('data-nameFolder')},
+		success : function (d) 
+		{
+			if (d.data.status == 'success')
+			{
+				$.each($('.changeFolder'), function(index, value){
+					$(value).find('.badge').html(d.data.mailBoxInformation['folder'][index]['messaggiNumero'])
+				})
+				notifica_success (d.data.msg)
+			}
+			
+		}
+	})
+	$('.rowMail[data-uid="'+event.dataTransfer.getData('uid')+'"]').remove()
+	$(event.target).css ('background-color', 'white')
+}
+
+function dragEnterFunction(event) 
+{
+	if ($(event.target).attr ('class') == 'list-group-item d-flex align-items-center changeFolder')
+	{
+		$(event.target).css ('background-color', 'rgb(103 58 183 / 12%)')
+	}
+	
+}
+
+function dragLeaveFunction(event) 
+{
+	if ($(event.target).attr ('class') == 'list-group-item d-flex align-items-center changeFolder')
+	{
+	$(event.target).css ('background-color', 'white')
+	}
+}
+
+function allowDrop (event) {
+	event.preventDefault();
+	event.dataTransfer.dropEffect = "move";
+}
+
+function dragStart (event) {
+	$('.changeFolder').css('border', 'dotted 0.2px black')
+	event.dataTransfer.setData("uid", $(event.target).attr('data-uid'));
+	event.target.style.opacity = .5
+}
+
+function dragEnd (event) {
+	$('.changeFolder').css('border', 'none')
+	event.target.style.opacity = 1
+}
+//FUNCTION PER LE CHIAMATE MAIL 
+$('.sendMail').on('click', function() {
+	var form_data = new FormData();
+	form_data.append('to',$('#emailTo').val())
+	form_data.append('oggetto', $('#emailSubject').val())
+	form_data.append('msg',$('#emailMsg').html())
+	form_data.append('reply',replyVar)
+
+	$.each(fileAtt, function(index, value){
+		form_data.append('files[]', value)
+	})
+		
+	
+
+	var url = '/sendMessage';
+	$.ajax({
+		type : 'post',
+		url : url,
+		processData: false,
+  		contentType: false,
+		data : form_data,
+		success : function (d) {
+			notifica_success(d.data.msg)
+			pulisciCasellaMail()
+		},
+	})
+})
+
+//FUNCTION PER SETTARE LE SCREEN MAIL
+function setMsgMailPopup (msg, append) {
+
+	if (append == true) {
+		$('#emailMsg').html($('#emailMsg').html() + '<br>' + msg)
+	}
+	else{
+		$('#emailMsg').html(msg)
+	}
+	
+}
+
+function setObjInMailPopup (obj) {
+	$('#emailSubject').val(obj);
+}
+
+function setToInMailPopup (destinatari) { 
+	destinatari.forEach( function (element, index) {
+		$('#emailTo').val($('#emailTo').val() + element);
+		if (index != destinatari.length - 1) 
+		{
+			$('#emailTo').val($('#emailTo').val() + ',')
+		}
+	});
+}
+
+function openScriviPopup () {
+	$('.compose-mail-popup').show()
+}
+
+function setEmailContentRow () {
+	$('.email-read-box').show()
+	$('.email-list').hide()
+}
+
+function setEmailContentList () {
+	$('.email-read-box').hide()
+	$('.email-list').show()
+}
+
+function setHeaderRow () {
+	$('.email-header').html('')
+	$('.email-header').append ($('#templateHederInRow').html())
+}
+
+function setHeaderList () {
+	$('.email-header').html('')
+	$('.email-header').append ($('#templateHederInList').html())
+}
+
+function addAscoltatoreDrag () {
+	$('.rowMail').attr ('ondragstart',"dragStart(event)");
+	$('.rowMail').attr ('ondragend',"dragEnd(event)");
+	$('.rowMail').attr ('draggable',"true");
+}
+
+function pulisciCasellaMail () {
+	$('.compose-mail-popup').hide()
+	$('#emailTo').val('');
+	$('#emailSubject').val('')
+	$('#emailMsg').html('')
+	fileAtt = {}
+	replyVar = false
+}
+
+</script>
+{% endblock %}

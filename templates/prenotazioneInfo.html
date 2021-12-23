@@ -1,0 +1,613 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+		<!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<div class="row" >
+						<div class="col-12 col-lg-12">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-4">
+											<button type="button" class="btn btn-danger m-1 btn-block radius-15" data-toggle="modal" id="buttonRegistraCliente" data-target="#mostraRegistraCliente">Registra cliente</button>
+										</div>
+										<div class="col-4 barInfoPrenotazioni-center m-0" >
+											<div id="statoSoggiornoGroup" class="btn-group m-1 d-flex align-items-center" role="group">
+												
+													<button id="1" type="button" class="btn btn-{% if prenotazione.statoSoggiorno != 1%}outline-{% endif %}warning statoSoggiorno">No Show</button>
+													<button id="2" type="button" class="btn btn-{% if prenotazione.statoSoggiorno != 2%}outline-{% endif %}success statoSoggiorno">Entrato</button>
+													<button id="3" type="button" class="btn btn-{% if prenotazione.statoSoggiorno != 3%}outline-{% endif %}danger statoSoggiorno">Uscito</button>
+											</div> 
+										</div>
+										<div class="col-4 m-0">
+											<div id="statoPagamentoGroup" class=" btn-group m-1 d-flex align-items-center" role="group" aria-label="Basic example">
+												<button id="1" type="button" class="btn btn-{% if prenotazione.statoPagamento != 1%}outline-{% endif %}warning statopagamento" data-toggle="tooltip" data-placement="top" data-html="true" title="CAPARRA -> {{prenotazione.calcolaCaparra()}}€">Caparra</button>
+												<button id="2" type="button" class="btn btn-{% if prenotazione.statoPagamento != 2%}outline-{% endif %}primary statopagamento">Pagamento</button>
+												<button id="3" type="button" class="btn btn-{% if prenotazione.statoPagamento != 3%}outline-{% endif %}success statopagamento">Pagato</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" >
+						<div class="col-12 col-lg-5">
+							<div class="card radius-15" style="height: 470px;">
+								<div class="card-body">
+									<div style="padding:10px" class="dettaglioPrenotazione">
+										<div class="row" >
+											<p class="mb-0 font-weight-bold">Dettagli prenotazione</p>
+										</div>
+										<hr>
+										<div class="dashboard-dettagli-prenotazioni">
+											<ul class="list-group list-group-flush">
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Cognome</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.cognome}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Checkin</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.checkIn}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">CheckOut</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.checkOut}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Trattamento</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.trattamento}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Adulti</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.adulti}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Ridotti</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.ridotti}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Infant</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.infant}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">E-mail</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.email}}</div>
+												</li>
+
+												<li class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														<div class="media-body">
+															<h6 class="mb-0">Telefono</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.preventivo.telefono}}</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-lg-5">
+							<div class="card radius-15" style="height: 470px;">
+								<div class="card-body">
+									<div class="d-flex mb-2">
+										<div>
+											<p class="mb-0 font-weight-bold">ADMIN PANEL</p>
+										</div>
+										<div class="row ml-auto align-self-end">
+											<div  class="col-6">
+												<p id="totale">TOTALE : {{ prenotazione.calcolaTotale() }}€</p>
+											</div>
+											<div class="col-6">
+												<p class="mb-0 font-14 text-primary" id="totale"><span id="openArriviModal" class = "badge badge-success dashboardControlla"><i class='bx bx-scan'></i>APPLICA SCONTO</span></p>
+											</div>
+										</div>
+									</div>
+									<div class="dettaglioPrenotazione">
+									<hr>
+									<div class="row">
+										<div class="col-12">
+											<div class="card radius-15 cardStyleInfoPrenotazione">
+												<div class="card-body" style="padding : 0.50rem" >
+													<div class="row">
+														<div class="col-12 d-flex">
+															{{prenotazione.camera.tipologia.tipo}} {{prenotazione.camera.numeroCamera}}
+															<div class="ml-auto">
+																{{prenotazione.prezzoCamera}}€
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-12">
+											<div class="card radius-15" data-toggle="modal" data-target="#mostraSupplementi">
+												<div class="card-body text-center cardStyleInfoPrenotazione" style="padding : 0.50rem"  data-toggle="tooltip" data-placement="top" data-html="true" title="
+												{% if prenotazione.supplementi_arrivi|length == 0%}
+													NESSUN SUPLLEMENTO
+												{% endif%}
+												{% for as in prenotazione.supplementi_arrivi %}
+													x{{as.quantita}} {{as.supplemento.nomeExtra}} - {{as.supplemento.prezzoExtra|int * as.quantita|int}}€ <br>
+												{% endfor%}">
+													<div class="row">
+														<div class="col-12 d-flex">
+															SUPPLEMENTI
+															<div class="ml-auto" id="prezzoSupplementi">
+																{{prenotazione.calcolaPrezziSupplementi()}}€
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<div class="card radius-15 cardStyleInfoPrenotazione" data-toggle="modal" data-target="#mostraTassaSoggiorno">
+												<div class="card-body text-center" style="padding : 0.50rem" data-toggle="tooltip" data-placement="top" data-html="true" title="
+												{% if prenotazione.tassaSoggiorno == 1%}
+													ATTIVA
+												{%else%}
+													DISATTIVA
+												{%endif%}">
+													<div class="row">
+														<div class="col-12 d-flex">
+															TASSA DI SOGGIORNO
+															<div class="ml-auto">
+																<div class="custom-control custom-switch">
+																	{% if prenotazione.tassaSoggiorno == 1%}
+																		<input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">
+																	{% else %}
+																		<input type="checkbox" class="custom-control-input" id="customSwitch1">
+																	{% endif%}
+																	<label class="custom-control-label" style="font-size : 14px" id="labelTassa" for="customSwitch1">{{prenotazione.calcolaTassaSoggiorno()}}€</label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12">
+											<div class="card radius-15 cardStyleInfoPrenotazione" data-toggle="modal" data-target="#mostraExtra">
+												<div class="card-body text-center" style="padding : 0.50rem" data-toggle="tooltip" data-placement="top" data-html="true" title="
+												{% if prenotazione.extra_arrivi | length == 0%}
+													NESSUN EXTRA
+												{% endif%}
+												{%for extra in prenotazione.extra_arrivi%}
+													x{{extra.quantita}} {{ extra.nome}} - {{extra.prezzo|int * extra.quantita|int}}€<br>
+												{% endfor%}
+												">
+													<div class="row">
+														<div class="col-12 d-flex">
+															EXTRA
+															<div class="ml-auto" id="prezzoExtra">
+																{{prenotazione.calcolaPrezziExtra()}}€
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<hr style="margin-top: 0px;">
+									<div class="row">
+										<div class="col-12">
+											<div class="card radius-15 "  data-toggle="modal" data-target="#mostraPagamenti" style="padding : 0.50rem;background-color: rgb(255, 230, 0);color:#b77600;font-weight: bold;" >
+												<div class="card-body text-center"  data-toggle="tooltip" data-placement="top" data-html="true" title="CAPARRA" style="padding : 0.50rem;" id="daPagare">
+													DA PAGARE {{prenotazione.calcolaTotale() - prenotazione.getPagamenti()}}€
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div class="col-12 col-lg-2 scrollContatti" style="height: 470px;">
+							{% for contatto in prenotazione.contatti %}
+								<div class="card radius-15 p-2">
+									<div class="openModalRegistraCliente" data-idContatto='{{contatto.id}}' class="card-body p-3">
+										<div>
+											<div class="d-flex justify-content-center align-items-center">
+												<p class="mb-0 font-weight-bold">{{contatto.cognome}}</p>
+											</div>
+											<div class="d-flex justify-content-center align-items-center">
+												<p class="mb-0 font-weight-bold">{{contatto.nome}}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<template id="pagamentoTemplate">
+			<li class="list-group-item d-flex align-items-center prenotazioniRow">
+				<div class="media align-items-center">
+					<div>
+						<div style="border-radius : 10px;background-color : red;" class="d-flex justify-content-center"> 
+							<div type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center deletePagamento"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></div>
+						</div>
+					</div>
+					<div class="media-body ml-2">
+						<h6 class="mb-0 dataPagamento"></h6>
+					</div>
+				</div>
+				<div class="ml-auto prezzoPagamento"></div>
+			</li>
+		</template>
+
+		<template id="extraTemplate">
+			<li class="list-group-item d-flex align-items-center">
+				<div class="media align-items-center">
+					<div>
+						<div style="border-radius : 10px;background-color : red;" data-index="0" class="col-2 d-flex justify-content-center"> 
+							<div type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" class="btn btn-primary d-flex justify-content-center align-items-center deleteExtra"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></div>
+						</div>
+					</div>
+					<div class="media-body ml-2">
+						<h6 class="mb-0" id="quantitaNomeExtraTemplate">-</h6>
+					</div>
+				</div>
+				<div class="ml-auto" id="prezzoExtraTemplate"></div>
+			</li>
+		</template>
+
+		<!--MODAL PAGAMENTI-->
+		<div id="mostraPagamenti" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<form id="formAggiungiPagamentoPrenotazione" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Pagamenti</h5>
+					</div>
+					<div class="modal-body">
+							{{ formPagamento.hidden_tag ()}}
+							<div id="extra">
+								<div class="form-body">
+									<div class="form-row">
+										<div class="form-group col-md-12">
+											{{ formPagamento.pagamento.label()}}
+											{{ formPagamento.pagamento()}}
+										</div>
+									</div>
+								</div>
+								<hr class="mb-0">
+								<ul class="list-group list-group-flush pagamentiList">
+									<!--COPIA-->
+									{% for pagamento in prenotazione.pagamenti_arrivi%}
+										<li data-prenotazione="{{prenotazione.id}}" class="list-group-item d-flex align-items-center prenotazioniRow">
+											<div class="media align-items-center">
+												<div>
+													<div style="border-radius : 10px;background-color : red;" class="d-flex justify-content-center"> 
+														<div type="button mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" data-idPagamento = "{{pagamento.id}}" class="btn btn-primary d-flex justify-content-center align-items-center deletePagamento"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></div>
+													</div>
+												</div>
+												<div class="media-body ml-2">
+													<h6 class="mb-0">{{pagamento.dataPagamento.strftime('%d-%m-%Y %H:%M')}}</h6>
+												</div>
+											</div>
+											<div class="ml-auto">{{pagamento.pagamento}}€</div>
+										</li>
+									{% endfor %}
+									<!--END COPIA-->
+								</ul>
+								<hr class="mt-0">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-danger" id="extraClose" aria-hidden="true" data-dismiss="modal">Close</button>
+							<button class="btn btn-primary" type="submit" aria-hidden="true" data-index="0">Salva</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--END MODAL PAGAMENTI-->
+
+		
+		<!--MODAL REGISTRA CLIENTE-->
+		<div id="mostraRegistraCliente" class="modal fade" data-backdrop="static" data-keyboard="false" aria-modal="true"   tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog  modal-dialog-centered">
+				<form method="POST" id="formRegistrazioneCliente">
+					{{ form.hidden_tag() }}
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Registra cliente</h5><button id="deleteContatto" type="button" class = "btn btn-danger">ELIMINA</button>
+					</div>
+					<div class="modal-body">
+						
+						<div class = "row" style = "padding:5px;border-left: solid green 2px; border-radius: 10px;">
+							<div class="col-12 mb-3">
+								<h5>INFO GENERALI</h5>
+							</div>
+							<div class="col-4 mb-3">
+								{{ form.nome.label() }} 
+								{{ form.nome() }}
+							</div>
+							<div class="col-4">
+								{{ form.cognome.label() }} 
+								{{ form.cognome() }}
+							</div>
+							<div class="col-4">
+								{{ form.cittadinanza.label() }} 
+								{{ form.cittadinanza() }}
+							</div>
+							<div class="col-4">
+								{{ form.sesso.label() }} 
+								{{ form.sesso() }}
+							</div>
+							<div class="col-4">
+								{{ form.telefono.label() }} 
+								{{ form.telefono() }}
+							</div>
+							<div class="col-4">
+								{{ form.email.label() }} 
+								{{ form.email() }}
+							</div>
+						</div>
+						<div class = "row mt-3" style = "padding:5px;border-left: solid red 2px; border-radius: 10px;">
+							<div class="col-12 mb-3">
+								<h5>INFORMAZIONI DI NASCITA</h5>
+							</div>
+							<div class="col-4 mb-3">
+								{{ form.dataDiNascita.label() }} 
+								{{ form.dataDiNascita() }}
+							</div>
+							<div class="col-4">
+								{{ form.paeseNascita.label() }} 
+								{{ form.paeseNascita() }}
+							</div>
+							<div class="col-4">
+								{{ form.comuneNascita.label() }} 
+								{{ form.comuneNascita() }}
+							</div>
+						</div>
+						<div class = "row mt-3" style = "padding:5px;border-left: solid yellow 2px; border-radius: 10px;">
+							<div class="col-12 mb-3">
+								<h5>INFORMAZIONI DI RESIDENZA</h5>
+							</div>
+							<div class="col-4 mb-3">
+								{{ form.paeseResidenza.label() }} 
+								{{ form.paeseResidenza() }}
+							</div>
+							<div class="col-4">
+								{{ form.comuneResidenza.label() }} 
+								{{ form.comuneResidenza() }}
+							</div>
+							<div class="col-4">
+								{{ form.cap.label() }} 
+								{{ form.cap() }}
+							</div>
+							<div class="col-4">
+								{{ form.indirizzo.label() }} 
+								{{ form.indirizzo() }}
+							</div>
+						</div>
+						<div class = "row mt-3" style = "padding:5px;border-left: solid brown 2px; border-radius: 10px;">
+							<div class="col-12 mb-3">
+								<h5>DOCUMENTO DI IDENTITA</h5>
+							</div>
+							<div class="col-4 mb-3">
+								{{ form.documento.label() }} 
+								{{ form.documento() }}
+							</div>
+							<div class="col-4">
+								{{ form.paeseImmissione.label() }} 
+								{{ form.paeseImmissione() }}
+							</div>
+							<div class="col-4">
+								{{ form.numeroDocumento.label() }} 
+								{{ form.numeroDocumento() }}
+							</div>
+							<div class="col-4">
+								{{ form.emessoDa.label() }} 
+								{{ form.emessoDa() }}
+							</div>
+							<div class="col-4">
+								{{ form.dataEmissione.label() }} 
+								{{ form.dataEmissione() }}
+							</div>
+							<div class="col-4">
+								{{ form.dataScadenza.label() }} 
+								{{ form.dataScadenza() }}
+							</div>
+						</div>
+						
+						
+						
+						<datalist id="paesi">
+							{% for value in dataPaesi.values() %}
+								<option value="{{value['italian_country_name_1']}}">
+							{% endfor %}
+						</datalist>
+						<datalist id="comuni">
+							{% for comune in dataComuni %}
+								<option cap="{{comune ['cap']}}" value="{{comune ['nome']}}">
+							{% endfor %}
+						</datalist>
+			
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" id="buttonCloseContatti" data-dismiss="modal">Close</button>
+						<button type="submit" name = "submit" value = "camere" class="btn btn-primary">Salva</button>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+		<!--END MODAL REGISTRA CLIENTE-->
+
+		<!--MODAL EXTRA-->
+		<div id="mostraExtra" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog  modal-dialog-centered">
+				<form id="formAggiungiExtraPrenotazione" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Extra</h5>
+					</div>
+					<div class="modal-body">
+							{{ formExtra.hidden_tag ()}}
+							<div id="extra">
+								<div class="form-body">
+									<div class="form-row">
+										<div class="form-group col-md-4">
+											{{ formExtra.nome.label()}}
+											{{ formExtra.nome()}}
+										</div>
+										<div class="form-group col-md-4">
+											{{ formExtra.quantita.label()}}
+											{{ formExtra.quantita()}}
+										</div>
+										<div class="form-group col-md-4">
+											{{ formExtra.prezzo.label()}}
+											{{ formExtra.prezzo()}}
+										</div>
+									</div>
+								</div>
+								<hr class="m-0">
+								<ul class="list-group list-group-flush listExtra" style="max-height : 300px">
+									<!--COPIA-->
+									{% for extra in prenotazione.extra_arrivi%}
+										<li class="list-group-item d-flex align-items-center">
+											<div class="media align-items-center">
+												<div>
+													<div style="border-radius : 10px;background-color : red;" data-index="0" class="col-2 d-flex justify-content-center"> 
+														<div type="mx-auto" style="width:100%;border:none;background-color: transparent;height:20px" data-idextra = '{{extra.id}}' class="btn btn-primary d-flex justify-content-center align-items-center deleteExtra"><i style="font-size: 10px;" class="bi bi-plus-circle mx-auto"></i></div>
+													</div>
+												</div>
+												<div class="media-body ml-2">
+													<h6 class="mb-0">{{extra.quantita}}x {{extra.nome}}</h6>
+												</div>
+											</div>
+											<div class="ml-auto">{{extra.prezzo}}€</div>
+										</li>
+									{% endfor %}
+									<!--END COPIA-->
+								</ul>
+								<hr class="m-0">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-danger" id="extraClose" aria-hidden="true" data-dismiss="modal">Close</button>
+							<button class="btn btn-primary" type="submit" aria-hidden="true" data-index="0">Salva</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--END MODAL EXTRA-->
+
+
+		<!--MODAL SUPPLEMENTI-->
+		<div id="mostraSupplementi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false" aria-modal="true"  aria-hidden="true">
+			<div class="modal-dialog  modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Supplementi</h5>
+					</div>
+					<div class="modal-body">
+								{% for supplemento in supplementi %}
+								<div class="row">
+									<div class="col-7">
+										{{supplemento.nomeExtra}}
+									</div>
+									<div class="col-2">
+										{{supplemento.prezzoExtra|int }}€
+									</div>
+									<div class="col-3">
+									{% if supplemento.id in valueSupplementi%}
+										<input class="form-control radius-30" id="quantita" data-lastModify='{{valueSupplementi [supplemento.id]}}' data-idSupplemento = '{{supplemento.id}}' name="quantita" required="" value="{{valueSupplementi [supplemento.id]}}" type="number" >
+									{% else %}
+										<input class="form-control radius-30" id="quantita" data-lastModify='0' data-idSupplemento = '{{supplemento.id}}' name="quantita" required="" value="0" type="number" >
+									{% endif %}
+									</div>
+								</div>
+								<hr>
+								{% endfor %}
+								<!--END COPIA-->
+							<hr class="m-0">
+						</div>
+					<div class="modal-footer">
+						<button class="btn btn-danger" id = "supplementiClose" aria-hidden="true" data-dismiss="modal">Close</button>
+						<button class="btn btn-primary" id = "salvaSupplementi" aria-hidden="true" data-index="0">Salva</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--END MODAL SUPPLEMENTI-->
+
+		
+
+		
+
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-in-mill.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-us-aea-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-uk-mill-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-au-mill.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'js/index.js')}}"></script>
+	<!-- App JS -->
+	<script type="module">
+		 import {prenotazioneInfo} from "{{ url_for ('static', filename= '/modules/main.js')}}"
+		 prenotazioneInfo ('{{idPrenotazione}}');
+</script>
+
+{% endblock %}

@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+		<!--page-wrapper-->
+		<div class="page-wrapper">
+			<!--page-content-wrapper-->
+			<div class="page-content-wrapper">
+				<div class="page-content">
+					<div class="row">
+						<div class="col-12 col-lg-4">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-flex mb-2">
+										<div>
+											<p class="mb-0 font-weight-bold">Arrivi oggi</p>
+											<h2 class="mb-0">{{arriviDict ['arriviOggi'] | length}}</h2>
+										</div>
+										<div class="ml-auto align-self-end">
+											<p class="mb-0 font-14 text-primary"><span id="openArriviModal" class = "badge badge-success dashboardControlla"><i class='bx bx-scan'></i> CONTROLLA</span>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-flex mb-2">
+										<div>
+											<p class="mb-0 font-weight-bold">Partenze oggi</p>
+											<h2 class="mb-0">{{arriviDict ['partenzeOggi'] | length}}</h2>
+										</div>
+										<div class="ml-auto align-self-end">
+											<p class="mb-0 font-14 text-success">  <span id="openPartenzeModal" class = "badge badge-warning dashboardControlla"><i class='bx bx-scan'></i> CONTROLLA</span>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-flex mb-2">
+										<div>
+											<p class="mb-0 font-weight-bold">In struttura oggi</p>
+											<h2 class="mb-0">2,346</h2>
+										</div>
+										<div class="ml-auto align-self-end">
+											<p class="mb-0 font-14 text-danger"><span class = "badge badge-primary dashboardControlla"><i class='bx bx-scan'></i> CONTROLLA</span>
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end row-->
+					<div class="row">
+						<div class="col-12 col-lg-12 col-xl-6">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-lg-flex align-items-center mb-4">
+										<div>
+											<h5 class="mb-0">Prenotazioni</h5>
+										</div>
+										<div class="ml-auto">
+											<h3 class="mb-0"><span class="font-14">Totali : </span> {{arriviDict ['arrivi'] | length}}</h3>
+										</div>
+									</div>
+									<hr/>
+									<div class="row">
+										<div class="col-12 mb-3 searchBar-icons">
+											<div class="inner-addon left-addon">
+												<i class="bx bx-search-alt glyphicon"></i>
+												<input class="form-control radius-30 search" style="width: 100%;" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" />
+											</div>
+											<datalist id="ice-cream-flavors">
+												{% for prenotazione in arriviDict['arrivi']%}
+													<option value="{{prenotazione.preventivo.cognome}}">
+												{% endfor %}
+											</datalist>
+										</div>
+									</div>
+									<div class="dashboard-social-list scrolling-dash">
+										
+										<ul class="list-group list-group-flush">
+											
+											<!--COPIA-->
+											{% for prenotazione in arriviDict ['arrivi']%}
+												<li data-prenotazione="{{prenotazione.id}}" class="list-group-item d-flex align-items-center prenotazioniRow">
+													<div class="media align-items-center">
+														{% if prenotazione.statoPagamento == 1%}
+															<div class="widgets-social bg-warning rounded-circle text-white"></div>
+														{%endif%}
+														{% if prenotazione.statoPagamento == 2%}
+															<div class="widgets-social bg-primary rounded-circle text-white"></div>
+														{%endif%}
+														{% if prenotazione.statoPagamento == 3%}
+															<div class="widgets-social bg-success rounded-circle text-white"></div>
+														{%endif%}
+														<div class="media-body ml-2">
+															<h6 class="mb-0">{{prenotazione.preventivo.cognome}}</h6>
+														</div>
+													</div>
+													<div class="ml-auto">{{prenotazione.prezzoCamera + prenotazione.prezzoSupplementi + prenotazione.prezzoExtra + prenotazione.tassaSoggiorno}}€</div>
+												</li>
+											{% endfor %}
+											<!--END COPIA-->
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						 <div class="col-12 col-lg-12 col-xl-6">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-lg-flex align-items-center mb-4">
+										<div>
+											<h5 class="mb-0">Preventivi</h5>
+										</div>
+										<div class="ml-auto">
+											<h3 class="mb-0"><span class="font-14">Totali : </span> {{preventivi | length}}</h3>
+										</div>
+									</div>
+									<hr/>
+									<div class="row">
+										<div class="col-12 mb-3 searchBar-icons">
+											<div class="inner-addon left-addon">
+												<i class="bx bx-search-alt glyphicon"></i>
+												<input class="form-control radius-30 search" style="width: 100%;" list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" />
+											</div>
+											<datalist id="ice-cream-flavors">
+												{% for preventivo in preventivi %}
+													<option value="{{preventivo.cognome}}">
+												{% endfor %}
+											</datalist>
+										</div>
+									</div>
+									<div class="dashboard-ultimi-preventivi scrolling-dash">
+										<ul class="list-group list-group-flush">
+											{% for preventivo in preventivi%}
+												<li class="list-group-item d-flex align-items-center">
+													<div class="media align-items-center">
+														<div class="widgets-social bg-facebook rounded-circle text-white"><i class='bx bxl-facebook'></i>
+														</div>
+														<div class="media-body ml-2">
+															<h6 class="mb-0">{{preventivo.cognome}}</h6>
+														</div>
+													</div>
+													<div class="ml-auto">324</div>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 col-lg-4" style="height:500px; position:relative">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="d-lg-flex align-items-center">
+										<div>
+											<h5 class="mb-4">Satato prenotazioni</h5>
+										</div>
+									</div>
+									<div id="statoPrenotazioniChart"></div>
+								</div>
+								<ul class="list-group list-group-flush mb-0">
+									<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">Caparra<span class="badge badge-warning badge-pill">25%</span>
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">Pagamento<span class="badge badge-primary badge-pill">65%</span>
+									</li>
+									<li class="list-group-item d-flex justify-content-between align-items-center bg-transparent">Pagato<span class="badge badge-success badge-pill">10%</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-12 col-lg-12 col-xl-8" style="min-height:500px; height:500px; position:relative">
+							<div class="card radius-15">
+								<div class="card-body">
+									<div class="card-title">
+										<h5 class="mb-0">Camere occupate</h5>
+									</div>
+									<hr/>
+									<div id="andamento-arrivi"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--end row-->
+				</div>
+			</div>
+			<!--end page-content-wrapper-->
+		</div>
+		<!--MODAL MOSTRA ARRIVI-->
+		<div id="mostraArrivi" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Arrivi</h5>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-12 mb-3 searchBar-icons">
+								<div class="inner-addon left-addon">
+									<i class="bx bx-search-alt glyphicon"></i>
+									<input class="form-control radius-30 search" style="width: 100%;" list="arriviOggiModal" />
+								</div>
+								<datalist id="arriviOggiModal">
+									{% for prenotazione in arriviDict['arriviOggi']%}
+										<option value="{{prenotazione.preventivo.cognome}}">
+									{% endfor %}
+								</datalist>
+							</div>
+						</div>
+						<ul class="list-group list-group-flush">
+							{% for prenotazione in arriviDict ['arriviOggi']%}
+								<li class="list-group-item d-flex align-items-center prenotazioniRow">
+									<div class="media align-items-center">
+										{% if prenotazione.statoPagamento == 1%}
+											<div class="widgets-social bg-warning rounded-circle text-white"></div>
+										{%endif%}
+										{% if prenotazione.statoPagamento == 2%}
+											<div class="widgets-social bg-primary rounded-circle text-white"></div>
+										{%endif%}
+										{% if prenotazione.statoPagamento == 3%}
+											<div class="widgets-social bg-success rounded-circle text-white"></div>
+										{%endif%}
+										<div class="media-body ml-2">
+											<h6 class="mb-0">{{prenotazione.preventivo.cognome}}</h6>
+										</div>
+									</div>
+									<div class="ml-auto">{{prenotazione.prezzoCamera}}€</div>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--END MODAL MOSTRA ARRIVI-->
+
+		<!--MODAL MOSTRA ARRIVI-->
+		<div id="mostraPartenze" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Partenze</h5>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-12 mb-3 searchBar-icons">
+								<div class="inner-addon left-addon">
+									<i class="bx bx-search-alt glyphicon"></i>
+									<input class="form-control radius-30 search" style="width: 100%;" list="arriviOggiModal" />
+								</div>
+								<datalist id="arriviOggiModal">
+									{% for prenotazione in arriviDict['partenzeOggi']%}
+										<option value="{{prenotazione.preventivo.cognome}}">
+									{% endfor %}
+								</datalist>
+							</div>
+						</div>
+						<ul class="list-group list-group-flush">
+							{% for prenotazione in arriviDict ['partenzeOggi']%}
+								<li class="list-group-item d-flex align-items-center prenotazioniRow">
+									<div class="media align-items-center">
+										{% if prenotazione.statoPagamento == 1%}
+											<div class="widgets-social bg-warning rounded-circle text-white"></div>
+										{%endif%}
+										{% if prenotazione.statoPagamento == 2%}
+											<div class="widgets-social bg-primary rounded-circle text-white"></div>
+										{%endif%}
+										{% if prenotazione.statoPagamento == 3%}
+											<div class="widgets-social bg-success rounded-circle text-white"></div>
+										{%endif%}
+										<div class="media-body ml-2">
+											<h6 class="mb-0">{{prenotazione.preventivo.cognome}}</h6>
+										</div>
+									</div>
+									<div class="ml-auto">{{prenotazione.prezzo}}€</div>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--END MODAL MOSTRA ARRIVI-->
+
+
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-in-mill.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-us-aea-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-uk-mill-en.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/vectormap/jquery-jvectormap-au-mill.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'plugins/apexcharts-bundle/js/apexcharts.min.js')}}"></script>
+	<script src="{{ url_for ('static', filename= 'js/index.js')}}"></script>
+	<!-- App JS -->
+	<script>
+		new PerfectScrollbar('.dashboard-social-list');
+		new PerfectScrollbar('.dashboard-ultimi-preventivi');
+
+		$('.prenotazioniRow').on('click', function(){
+			window.location.replace("/prenotazioneInfo/"+$(this).attr('data-prenotazione'));
+		})
+
+		$('#openArriviModal').on('click', function (){
+			$('#mostraArrivi').modal('show')
+			$("#mostraArrivi").addClass("modal-dialog-scrollable");
+		});
+
+		$('#openPartenzeModal').on('click', function (){
+			$('#mostraPartenze').modal('show')
+			$("#mostraPartenze").addClass("modal-dialog-scrollable");
+		});
+
+		$(function () {
+		"use strict";
+		
+		
+		
+		// chart 5
+		var options = {
+			series: [25, 65, 100],
+			chart: {
+				height: 240,
+				type: 'donut',
+			},
+			legend: {
+				position: 'bottom',
+				show: true,
+			},
+			plotOptions: {
+				pie: {
+					// customScale: 0.8,
+					donut: {
+						size: '50%'
+					}
+				}
+			},
+			colors: ["#ffc107", "#673ab7", "#32ab13"],
+			dataLabels: {
+				enabled: false
+			},
+			labels: ['Caparra', 'Pagamento', 'Pagato'],
+			responsive: [{
+				breakpoint: 480,
+				options: {
+					chart: {
+						height: 200
+					},
+					legend: {
+						position: 'bottom'
+					}
+				}
+			}]
+		};
+		var chart = new ApexCharts(document.getElementById("statoPrenotazioniChart"), options);
+		chart.render();
+
+		var options = {
+		series: [{
+			name: 'Likes',
+			data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+		}],
+		chart: {
+			foreColor: '#9ba7b2',
+			height: 400,
+			type: 'line',
+			zoom: {
+				enabled: false
+			},
+			toolbar: {
+				show: true
+			}
+		},
+		stroke: {
+			width: 5,
+			curve: 'smooth'
+		},
+		xaxis: {
+			type: 'datetime',
+			categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000', '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001', '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'],
+		},
+		fill: {
+			type: 'gradient',
+			gradient: {
+				shade: 'light',
+				gradientToColors: ['#673ab7'],
+				shadeIntensity: 1,
+				type: 'horizontal',
+				opacityFrom: 1,
+				opacityTo: 1,
+				stops: [0, 100, 100, 100]
+			},
+		},
+		markers: {
+			size: 4,
+			colors: ["#673ab7"],
+			strokeColors: "#fff",
+			strokeWidth: 2,
+			hover: {
+				size: 7,
+			}
+		},
+		colors: ["#673ab7"],
+		yaxis: {
+			title: {
+				text: 'Arrivi',
+			},
+		}
+	};
+		var chart = new ApexCharts(document.getElementById("andamento-arrivi"), options);
+		chart.render();
+	});
+	</script>
+
+{% endblock %}
